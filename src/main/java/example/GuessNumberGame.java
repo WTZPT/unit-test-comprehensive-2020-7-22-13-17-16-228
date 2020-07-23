@@ -7,6 +7,7 @@ public class GuessNumberGame {
 
     private GenerateNumber generateTargetNumberHandle;
     private String[] targetNumber;
+    private String targetNumberStr;
     private int surPlusTimes;
     private final int challenge = 6;
     private final String WRONG_INPUT = "Wrong Input，Input again";
@@ -15,9 +16,29 @@ public class GuessNumberGame {
         this.generateTargetNumberHandle = generateTargetNumberHandle;
         initGuessNumberGame();
     }
+    public void manMachineInteractionStart(){
+        Scanner input = new Scanner(System.in);
+        String inputVal= "";
+        String res;
+        do{
+            System.out.println(MessageFormat.format("You have {0} chances left",this.surPlusTimes));
+            inputVal = input.next();
+            res = this.start(inputVal);
+            if(res.equals(SUR_PLUS_ZERO)) {
+                System.out.println(MessageFormat.format("The round of guessing game is over, and the target number is:{0}", targetNumberStr));
+                initGuessNumberGame();
+                System.out.println("-------------Into a new round---------------");
+            }else{
+                System.out.println(res);
+            }
+        }while (inputVal != "#");
+        System.out.println("You exit the game successfully!");
+
+    }
 
     private void initGuessNumberGame(){
-        targetNumber = Arrays.stream(this.generateTargetNumberHandle.generateNumber().split("")).toArray(String[]::new);
+        targetNumberStr = this.generateTargetNumberHandle.generateNumber();
+        targetNumber = Arrays.stream(targetNumberStr.split("")).toArray(String[]::new);
         this.surPlusTimes = challenge;
     }
 
@@ -57,7 +78,7 @@ public class GuessNumberGame {
     }
 
     private boolean checkSurplusTimes() {
-        if(surPlusTimes > 0 ) {
+        if(surPlusTimes > 1 ) {
             surPlusTimes--;
             return true;
         }
