@@ -9,6 +9,6 @@ public class GuessNumberGame {
     }
 
     public String start(String guessNumber) {
-        return "";
+        return targetNumber.equals(guessNumber) ? "4A0B" : null;
     }
 }
