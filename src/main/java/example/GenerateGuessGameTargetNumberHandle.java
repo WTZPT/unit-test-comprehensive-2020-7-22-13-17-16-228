@@ -2,7 +2,7 @@ package example;
 
 import java.util.Random;
 
-public class GenerateGuessGameTargetNumber implements GenerateNumber {
+public class GenerateGuessGameTargetNumberHandle implements GenerateNumber {
     @Override
     public String generateNumber() {
 
