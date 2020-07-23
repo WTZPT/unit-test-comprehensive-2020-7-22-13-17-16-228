@@ -13,7 +13,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class GuessNumberGameTest {
-
+    private final String WRONG_INPUT = "Wrong Input，Input again";
+    private final String SUR_PLUS_ZERO = "no challenge time! ";
     private GenerateGuessGameTargetNumberHandle generateGuessGameTargetNumberHandle = mock(GenerateGuessGameTargetNumberHandle.class);
 
     @Test
@@ -68,11 +69,20 @@ public class GuessNumberGameTest {
 
     @Test
     @DisplayName("存在部分的目标数&且位置都不对")
-    void shoul_Return_0A2B_when_Given_4378() {
+    void should_Return_0A2B_when_Given_4378() {
         when(generateGuessGameTargetNumberHandle.generateNumber()).thenReturn("1234");
         GuessNumberGame guessNumberGame = new GuessNumberGame(generateGuessGameTargetNumberHandle);
         String except = "0A2B";
         String guessNumber = "4378";
+        assertEquals(except,guessNumberGame.start(guessNumber));
+    }
+
+    @Test
+    void should_Return_WRONG_INPUT_when_Given_123(){
+        when(generateGuessGameTargetNumberHandle.generateNumber()).thenReturn("1234");
+        GuessNumberGame guessNumberGame = new GuessNumberGame(generateGuessGameTargetNumberHandle);
+        String except = WRONG_INPUT;
+        String guessNumber = "123";
         assertEquals(except,guessNumberGame.start(guessNumber));
     }
 
