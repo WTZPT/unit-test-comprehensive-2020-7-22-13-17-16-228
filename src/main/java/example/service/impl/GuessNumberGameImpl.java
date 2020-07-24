@@ -1,20 +1,23 @@
-package example;
+package example.service.impl;
 
 import example.service.GenerateNumberService;
+import example.service.GuessNumberGame;
+import example.service.vo.CheckedResult;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
-public class GuessNumberGame {
+public class GuessNumberGameImpl implements GuessNumberGame {
 
     private GenerateNumberService generateTargetNumberHandle;
     private String[] targetNumber;
     private String targetNumberStr;
     private int surPlusTimes;
     private final int challenge = 6;
-    private final String WRONG_INPUT = "Wrong Input，Input again";
-    private final String SUR_PLUS_ZERO = "no challenge time! ";
-    public GuessNumberGame(GenerateNumberService generateTargetNumberHandle) {
+    private final String WRONG_INPUT = "Wrong Input,Input again";
+    private final String SUR_PLUS_ZERO = "no challenge time!";
+    public GuessNumberGameImpl(GenerateNumberService generateTargetNumberHandle) {
         this.generateTargetNumberHandle = generateTargetNumberHandle;
         initGuessNumberGame();
     }
@@ -42,47 +45,45 @@ public class GuessNumberGame {
         System.out.println("You exit the game successfully!");
     }
 
-    private void initGuessNumberGame(){
+    @Override
+    public void initGuessNumberGame(){
         targetNumberStr = this.generateTargetNumberHandle.generateNumber();
         targetNumber = Arrays.stream(targetNumberStr.split("")).toArray(String[]::new);
         this.surPlusTimes = challenge;
     }
 
+    @Override
     public String start(String guessNumber) {
-
-        //TODO name
-        CheckLegalVo checkLegalVo = checkLegal(guessNumber);
-        if (checkLegalVo.isLegal()) {
+        CheckedResult checkedResult = checkLegal(guessNumber);
+        if (checkedResult.isLegal()) {
             return targetNumber.equals(guessNumber) ? "4A0B" :  guessAlgorithmProcess(guessNumber);
         } else {
-            return checkLegalVo.getMsg();
+            return checkedResult.getMsg();
         }
     }
 
-    private CheckLegalVo checkLegal(String guessNumber) {
+    private CheckedResult checkLegal(String guessNumber) {
 
         if(!checkSurplusTimes()){
-            return new CheckLegalVo(false,SUR_PLUS_ZERO);
+            return new CheckedResult(false,SUR_PLUS_ZERO);
         } else if(!checkNumberFormat(guessNumber)){
-            return new CheckLegalVo(false,WRONG_INPUT);
+            return new CheckedResult(false,WRONG_INPUT);
         }
 
-        return new CheckLegalVo(true);
+        return new CheckedResult(true);
     }
 
     private boolean checkNumberFormat(String guessNumber) {
-        return (guessNumber.length() == 4 && duplicateChecking(guessNumber) );
+        return (guessNumber.length() == 4  && figureChecking(guessNumber) && duplicateChecking(guessNumber) );
+    }
+
+    private boolean figureChecking(String guessNumber) {
+        Pattern pattern = Pattern.compile("\\d{4}");
+        return pattern.matcher(guessNumber).find();
     }
 
     private boolean duplicateChecking(String guessNumber) {
-        Set<String> guessNumberSet = new HashSet<>();
-        for(String str : guessNumber.split("")){
-            if(guessNumberSet.contains(str)) {
-                return false;
-            }
-            guessNumberSet.add(str);
-        }
-        return true;
+        return Arrays.stream(guessNumber.split("")).distinct().count() == 4;
     }
 
     private boolean checkSurplusTimes() {
@@ -94,48 +95,18 @@ public class GuessNumberGame {
     }
 
     private String guessAlgorithmProcess(String guessNumber) {
-        //TODO refactor ansA ansB
+       
         String[] guess = Arrays.stream(guessNumber.split("")).toArray(String[]::new);
-        int ansB = (int)Arrays.stream(targetNumber).filter(o-> o.equals(guess[0]) || o.equals(guess[1])
+        int valueAccordCount = (int)Arrays.stream(targetNumber).filter(o-> o.equals(guess[0]) || o.equals(guess[1])
                 || o.equals(guess[2]) || o.equals(guess[3]) ).count();
-        int ansA = 0;
+        int valueAndPostionAccordCount = 0;
         for(int i = 0; i < 4; i++) {
             if(targetNumber[i].equals(guess[i])) {
-                ansA++;
+                valueAndPostionAccordCount++;
             }
         }
-        ansB = ansB - ansA;
-        return MessageFormat.format("{0}A{1}B",ansA,ansB);
+        valueAccordCount = valueAccordCount - valueAndPostionAccordCount;
+        return MessageFormat.format("{0}A{1}B",valueAndPostionAccordCount,valueAccordCount);
     }
 
-
-    class CheckLegalVo {
-        private boolean isLegal;
-        private String msg;
-
-        public CheckLegalVo(boolean isLegal) {
-            this.isLegal = isLegal;
-        }
-
-        public CheckLegalVo(boolean isLegal, String msg) {
-            this.isLegal = isLegal;
-            this.msg = msg;
-        }
-
-        public boolean isLegal() {
-            return isLegal;
-        }
-
-        public void setLegal(boolean legal) {
-            isLegal = legal;
-        }
-
-        public String getMsg() {
-            return msg;
-        }
-
-        public void setMsg(String msg) {
-            this.msg = msg;
-        }
-    }
 }

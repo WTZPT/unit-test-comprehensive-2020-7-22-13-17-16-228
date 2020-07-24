@@ -1,6 +1,6 @@
 package example;
 
-import example.service.GenerateTargetNumberHandle;
+import example.service.impl.GenerateTargetNumberHandle;
 import example.service.GenerateNumberService;
 import org.junit.jupiter.api.Test;
 

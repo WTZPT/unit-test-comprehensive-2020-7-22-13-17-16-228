@@ -1,4 +1,6 @@
-package example.service;
+package example.service.impl;
+
+import example.service.GenerateNumberService;
 
 import java.util.Random;
 

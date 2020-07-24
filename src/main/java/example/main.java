@@ -1,9 +1,13 @@
 package example;
 
+import example.service.impl.GenerateTargetNumberHandle;
+import example.service.GenerateNumberService;
+import example.service.impl.GuessNumberGameImpl;
+
 public class main {
     public static void main(String[] args) {
-        GenerateNumber generateNumber = new GenerateGuessGameTargetNumberHandle();
-        GuessNumberGame guessNumberGame = new GuessNumberGame(generateNumber);
-        guessNumberGame.manMachineInteractionStart();
+        GenerateNumberService generateNumberService = new GenerateTargetNumberHandle();
+        GuessNumberGameImpl guessNumberGameImpl = new GuessNumberGameImpl(generateNumberService);
+        guessNumberGameImpl.manMachineInteractionStart();
     }
 }
