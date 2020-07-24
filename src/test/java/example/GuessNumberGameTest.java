@@ -1,21 +1,22 @@
 package example;
 
 
-
-
-
+import example.service.GenerateTargetNumberHandle;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+
 public class GuessNumberGameTest {
     private final String WRONG_INPUT = "Wrong Input，Input again";
     private final String SUR_PLUS_ZERO = "no challenge time! ";
-    private GenerateGuessGameTargetNumberHandle generateGuessGameTargetNumberHandle = mock(GenerateGuessGameTargetNumberHandle.class);
+    private GenerateTargetNumberHandle generateGuessGameTargetNumberHandle = mock(GenerateTargetNumberHandle.class);
 
     @Test
    @DisplayName("存在全部的目标数,且位置全正确")
@@ -86,4 +87,15 @@ public class GuessNumberGameTest {
         assertEquals(except,guessNumberGame.start(guessNumber));
     }
 
+    @ParameterizedTest
+    @DisplayName("存在部分的目标数&且位置都不对")
+    @CsvSource({
+            "1256,2A0B",
+            "1345,1A2B"
+    })
+    void should_except_when_given_actual(String guessName,String except){
+        when(generateGuessGameTargetNumberHandle.generateNumber()).thenReturn("1234");
+        GuessNumberGame guessNumberGame = new GuessNumberGame(generateGuessGameTargetNumberHandle);
+        assertEquals(except,guessNumberGame.start(guessName));
+    }
 }

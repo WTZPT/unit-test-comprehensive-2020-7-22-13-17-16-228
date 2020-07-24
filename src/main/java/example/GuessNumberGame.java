@@ -1,18 +1,20 @@
 package example;
 
+import example.service.GenerateNumberService;
+
 import java.text.MessageFormat;
 import java.util.*;
 
 public class GuessNumberGame {
 
-    private GenerateNumber generateTargetNumberHandle;
+    private GenerateNumberService generateTargetNumberHandle;
     private String[] targetNumber;
     private String targetNumberStr;
     private int surPlusTimes;
     private final int challenge = 6;
     private final String WRONG_INPUT = "Wrong Input，Input again";
     private final String SUR_PLUS_ZERO = "no challenge time! ";
-    public GuessNumberGame(GenerateNumber generateTargetNumberHandle) {
+    public GuessNumberGame(GenerateNumberService generateTargetNumberHandle) {
         this.generateTargetNumberHandle = generateTargetNumberHandle;
         initGuessNumberGame();
     }
@@ -28,12 +30,16 @@ public class GuessNumberGame {
                 System.out.println(MessageFormat.format("The round of guessing game is over, and the target number is:{0}", targetNumberStr));
                 initGuessNumberGame();
                 System.out.println("-------------Into a new round---------------");
+            }else if(res.equals("4A0B")){
+                System.out.println(res);
+                System.out.println(MessageFormat.format("Congratulations on your target number {0}",this.targetNumberStr));
+                initGuessNumberGame();
+                System.out.println("-------------Into a new round---------------");
             }else{
                 System.out.println(res);
             }
-        }while (inputVal != "#");
+        }while (!inputVal.equals("#"));
         System.out.println("You exit the game successfully!");
-
     }
 
     private void initGuessNumberGame(){
@@ -43,7 +49,9 @@ public class GuessNumberGame {
     }
 
     public String start(String guessNumber) {
-        checkLegalVo checkLegalVo = checkLegal(guessNumber);
+
+        //TODO name
+        CheckLegalVo checkLegalVo = checkLegal(guessNumber);
         if (checkLegalVo.isLegal()) {
             return targetNumber.equals(guessNumber) ? "4A0B" :  guessAlgorithmProcess(guessNumber);
         } else {
@@ -51,15 +59,15 @@ public class GuessNumberGame {
         }
     }
 
-    private checkLegalVo checkLegal(String guessNumber) {
+    private CheckLegalVo checkLegal(String guessNumber) {
 
         if(!checkSurplusTimes()){
-            return new checkLegalVo(false,SUR_PLUS_ZERO);
+            return new CheckLegalVo(false,SUR_PLUS_ZERO);
         } else if(!checkNumberFormat(guessNumber)){
-            return new checkLegalVo(false,WRONG_INPUT);
+            return new CheckLegalVo(false,WRONG_INPUT);
         }
 
-        return new checkLegalVo(true);
+        return new CheckLegalVo(true);
     }
 
     private boolean checkNumberFormat(String guessNumber) {
@@ -86,6 +94,7 @@ public class GuessNumberGame {
     }
 
     private String guessAlgorithmProcess(String guessNumber) {
+        //TODO refactor ansA ansB
         String[] guess = Arrays.stream(guessNumber.split("")).toArray(String[]::new);
         int ansB = (int)Arrays.stream(targetNumber).filter(o-> o.equals(guess[0]) || o.equals(guess[1])
                 || o.equals(guess[2]) || o.equals(guess[3]) ).count();
@@ -100,15 +109,15 @@ public class GuessNumberGame {
     }
 
 
-    class checkLegalVo{
+    class CheckLegalVo {
         private boolean isLegal;
         private String msg;
 
-        public checkLegalVo(boolean isLegal) {
+        public CheckLegalVo(boolean isLegal) {
             this.isLegal = isLegal;
         }
 
-        public checkLegalVo(boolean isLegal, String msg) {
+        public CheckLegalVo(boolean isLegal, String msg) {
             this.isLegal = isLegal;
             this.msg = msg;
         }
