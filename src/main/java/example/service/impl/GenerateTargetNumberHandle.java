@@ -7,7 +7,7 @@ import java.util.Random;
 public class GenerateTargetNumberHandle implements GenerateNumberService {
     @Override
     public String generateNumber() {
-        int[] array = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
+        int[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
         int result = 0;
         Random random = new Random();
 
