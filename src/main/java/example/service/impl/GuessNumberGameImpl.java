@@ -6,46 +6,32 @@ import example.service.vo.CheckedResult;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import static java.util.regex.Pattern.compile;
 
 public class GuessNumberGameImpl implements GuessNumberGame {
 
+    public static final String FOUR_NUMBER_REGEX = "\\d{4}";
     private GenerateNumberService generateTargetNumberHandle;
     private String[] targetNumber;
     private String targetNumberStr;
     private int surPlusTimes;
     private final int challenge = 6;
-    private final String WRONG_INPUT = "Wrong Input,Input again";
-    private final String SUR_PLUS_ZERO = "no challenge time!";
+    public static final String WRONG_INPUT = "Wrong Input,Input again";
+    public static final String SUR_PLUS_ZERO = "no challenge time!";
 
     public GuessNumberGameImpl(GenerateNumberService generateTargetNumberHandle) {
         this.generateTargetNumberHandle = generateTargetNumberHandle;
         initGuessNumberGame();
     }
 
-    public void manMachineInteractionStart() {
-        Scanner input = new Scanner(System.in);
-        String inputVal = "";
-        String res;
-        do {
-            System.out.println(MessageFormat.format("You have {0} chances left", this.surPlusTimes));
-            inputVal = input.next();
-            res = this.start(inputVal);
-            if (res.equals(SUR_PLUS_ZERO)) {
-                System.out.println(MessageFormat.format("The round of guessing game is over, and the target number is:{0}", targetNumberStr));
-                initGuessNumberGame();
-                System.out.println("-------------Into a new round---------------");
-            } else if (res.equals("4A0B")) {
-                System.out.println(res);
-                System.out.println(MessageFormat.format("Congratulations on your target number {0}", this.targetNumberStr));
-                initGuessNumberGame();
-                System.out.println("-------------Into a new round---------------");
-            } else {
-                System.out.println(res);
-            }
-        } while (!inputVal.equals("#"));
-        System.out.println("You exit the game successfully!");
+    public int getSurPlusTimes() {
+        return surPlusTimes;
+    }
+
+    public String getTargetNumberStr() {
+        return targetNumberStr;
     }
 
     @Override
@@ -81,7 +67,7 @@ public class GuessNumberGameImpl implements GuessNumberGame {
     }
 
     private boolean figureChecking(String guessNumber) {
-        Pattern pattern = Pattern.compile("\\d{4}");
+        Pattern pattern = compile(FOUR_NUMBER_REGEX);
         return pattern.matcher(guessNumber).find();
     }
 
@@ -102,14 +88,14 @@ public class GuessNumberGameImpl implements GuessNumberGame {
         String[] guess = Arrays.stream(guessNumber.split("")).toArray(String[]::new);
         int valueAccordCount = (int) Arrays.stream(targetNumber).filter(o -> o.equals(guess[0]) || o.equals(guess[1])
                 || o.equals(guess[2]) || o.equals(guess[3])).count();
-        int valueAndPostionAccordCount = 0;
+        int valueAndPositionAccordCount = 0;
         for (int i = 0; i < 4; i++) {
             if (targetNumber[i].equals(guess[i])) {
-                valueAndPostionAccordCount++;
+                valueAndPositionAccordCount++;
             }
         }
-        valueAccordCount = valueAccordCount - valueAndPostionAccordCount;
-        return MessageFormat.format("{0}A{1}B", valueAndPostionAccordCount, valueAccordCount);
+        valueAccordCount = valueAccordCount - valueAndPositionAccordCount;
+        return MessageFormat.format("{0}A{1}B", valueAndPositionAccordCount, valueAccordCount);
     }
 
 }
