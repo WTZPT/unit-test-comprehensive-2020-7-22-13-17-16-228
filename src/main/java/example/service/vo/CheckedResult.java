@@ -1,20 +1,20 @@
 package example.service.vo;
 
 public class CheckedResult {
-    private boolean isLegal;
+    private boolean legal;
     private String msg;
 
-    public CheckedResult(boolean isLegal) {
-        this.isLegal = isLegal;
+    public CheckedResult(boolean legal) {
+        this.legal = legal;
     }
 
-    public CheckedResult(boolean isLegal, String msg) {
-        this.isLegal = isLegal;
+    public CheckedResult(boolean legal, String msg) {
+        this.legal = legal;
         this.msg = msg;
     }
 
     public boolean isLegal() {
-        return isLegal;
+        return legal;
     }
 
     public String getMsg() {
