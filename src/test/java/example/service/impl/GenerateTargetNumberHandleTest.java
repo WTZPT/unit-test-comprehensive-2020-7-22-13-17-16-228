@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GenerateTargetNumberHandleTest {
     private GenerateNumberService generateGuessGameTargetNumberHandle = new GenerateTargetNumberHandle();
@@ -23,17 +24,17 @@ public class GenerateTargetNumberHandleTest {
     void should_four_numbers_when_valid_target_number() {
         String numberRegular = "\\d{4}";
         Pattern targetNumberPattern = Pattern.compile(numberRegular);
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
-        assertEquals(true, targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
+        assertTrue(targetNumberPattern.matcher(generateGuessGameTargetNumberHandle.generateNumber()).find());
     }
 }
